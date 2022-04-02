@@ -11,19 +11,29 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qqwe%+#gvt*t(ygcyb&(e9!#5*x5cf#lzr&&c3egq2eb^_e5!f'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'environ',
     'CeylonuniApp'
 ]
 
@@ -79,8 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
        'CLIENT':{
-           "host":"mongodb+srv://root:root@cluster0.rzrxq.mongodb.net/ceylonuni?retryWrites=true&w=majority",
-           "name":"ceylonuni",
+           "host":env('HOST'),
+           "name":env('DB_NAME'),
            "authMechanism":"SCRAM-SHA-1"
        }
     }
