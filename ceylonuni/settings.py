@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
        'CLIENT':{
-           "host":"mongodb+srv://root:root@cluster0.rzrxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+           "host":"mongodb+srv://root:root@cluster0.rzrxq.mongodb.net/ceylonuni?retryWrites=true&w=majority",
            "name":"ceylonuni",
            "authMechanism":"SCRAM-SHA-1"
        }
