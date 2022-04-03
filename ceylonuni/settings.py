@@ -47,12 +47,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
+    'drf_yasg',
     'environ',
-    'CeylonuniApp'
+    'authentication',
+    'CeylonuniApp',
+
 ]
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
+CORS_ORIGIN_ALLOW_ALL=True
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,6 +79,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ceylonuni.urls'
+
 
 TEMPLATES = [
     {
@@ -82,18 +99,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ceylonuni.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-       'CLIENT':{
-           "host":env('HOST'),
-           "name":env('DB_NAME'),
-           "authMechanism":"SCRAM-SHA-1"
-       }
+        'CLIENT': {
+            "host": env('HOST'),
+            "name": env('DB_NAME'),
+            "authMechanism": "SCRAM-SHA-1"
+        }
     }
 }
 
