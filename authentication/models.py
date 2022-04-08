@@ -1,10 +1,22 @@
 from django.db import models
-from CeylonuniApp.models import Students
+from CeylonuniApp.models import Student
 from rest_framework_simplejwt.tokens import RefreshToken
 # Create your models here.
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
+class UserManager(BaseUserManager):
 
-class Accounts(models.Model):
+    def create_user(self, username, email, password=None):
+        if email is None:
+            raise TypeError('Users should have a Email')
+
+        user = self.model(username=username, email=self.normalize_email(email))
+        user.set_password(password)
+        user.save()
+        return user
+
+class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=255, unique=True)
     password = models.CharField(max_length=350)
@@ -12,16 +24,21 @@ class Accounts(models.Model):
     verifiedDate = models.DateTimeField(auto_now_add=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now_add=True)
-    deletedAt = models.DateTimeField(null=True,default=None)
+    deletedAt = models.DateTimeField(null=True)
     student = models.ForeignKey(
-       Students, on_delete=models.CASCADE)
+       Student, on_delete=models.CASCADE)
+   
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
-   #  def __str__(self):
-   #      return self.email
+    objects = UserManager()
 
-   #  def tokens(self):
-   #      refresh = RefreshToken.for_user(self)
-   #      return {
-   #          'refresh': str(refresh),
-   #          'access': str(refresh.access_token)
-   #      }
+    def __str__(self):
+        return self.email
+
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }

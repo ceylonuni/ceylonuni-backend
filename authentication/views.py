@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics, status, views, permissions
-from .serializers import AccountSerializer, EmailSerializer, LoginSerializer, AccountVerificationSerializer
+from .serializers import RegisterSerializer, EmailSerializer, LoginSerializer, AccountVerificationSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Accounts, Students
+from .models import User, Student
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
@@ -16,7 +16,7 @@ from drf_yasg import openapi
 
 class RegisterView(generics.GenericAPIView):
 
-    serializer_class = AccountSerializer
+    serializer_class = RegisterSerializer
 
     def post(self, request):
         user = request.data
@@ -24,7 +24,7 @@ class RegisterView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         user_data = serializer.data
-        user = Accounts.objects.get(email=user_data['email'])
+        user = User.objects.get(email=user_data['email'])
         token = RefreshToken.for_user(user).access_token
         current_site = get_current_site(request).domain
         relativeLink = reverse('account-verify')
@@ -51,7 +51,7 @@ class VerifyEmail(views.APIView):
         serializer.is_valid(raise_exception=True)
         validate = True
         if validate:
-             return Response({'email': 'This is an university mail'}, status=status.HTTP_200_OK)
+             return Response({'universityEmail': True}, status=status.HTTP_200_OK)
         
 
 class VerifyAccount(views.APIView):
@@ -65,7 +65,7 @@ class VerifyAccount(views.APIView):
         token = request.GET.get('token')
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
-            user = Students.objects.get(id=payload['student'])
+            user = Student.objects.get(id=payload['student'])
             if not user.isVerified:
                 user.isVerified = True
                 user.save()
