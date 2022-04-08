@@ -2,22 +2,22 @@ from django.db import models
 
 # Create your models here.
 
-class Universities(models.Model):
+class University(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=350)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now_add=True)
 
-class Courses(models.Model):
+class Course(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=350)
     createdAt = models.DateTimeField(auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now_add=True)
     university = models.ForeignKey(
-        Universities, on_delete=models.CASCADE)
+        University, on_delete=models.CASCADE)
 
 
-class Students(models.Model):
+class Student(models.Model):
     id = models.AutoField(primary_key=True)
     firstName = models.CharField(max_length=350)
     lastName = models.CharField(max_length=350)
@@ -34,6 +34,6 @@ class Students(models.Model):
     updatedAt = models.DateTimeField(auto_now_add=True)
     deletedAt = models.DateTimeField(null=True,default=None)
     course = models.ForeignKey(
-        Courses, on_delete=models.CASCADE)
+        Course, on_delete=models.CASCADE)
 
 
