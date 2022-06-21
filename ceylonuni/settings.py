@@ -40,6 +40,11 @@ ALLOWED_HOSTS = ['ceylonuni.herokuapp.com']
 AUTH_USER_MODEL = 'authentication.User'
 # Application definition
 
+# All settings common to all environments
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
