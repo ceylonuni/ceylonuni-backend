@@ -30,6 +30,9 @@ class University(generics.GenericAPIView):
         university_data = serializer.data
         return Response(university_data, status=status.HTTP_201_CREATED)
 
+    def updateUniversity(self, request):
+        return ''
+
 class Course(generics.GenericAPIView):
 
     serializer_class = CourseSerializer
