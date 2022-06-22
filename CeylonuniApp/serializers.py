@@ -1,6 +1,6 @@
 from pyexpat import model
 from rest_framework import serializers
-from CeylonuniApp.models import University,Course,Student
+from CeylonuniApp.models import University,Course,Student,UniversityEmail
 
 
 class UniversitySerializer(serializers.ModelSerializer):
@@ -18,3 +18,8 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model=Student
         fields=('id','firstName','lastName','email','mobile','isVerified','isActive','address1','address2','city','state','zip','createdAt','updatedAt','deletedAt','course')
+
+class UniversityEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=UniversityEmail
+        fields=('id','email')
