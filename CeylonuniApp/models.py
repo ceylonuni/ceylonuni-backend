@@ -36,4 +36,11 @@ class Student(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE)
 
+# model for university email
+class UniversityEmail(models.Model):
+    id = models.AutoField(primary_key=True)
+    email = models.CharField(max_length=150,unique=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now_add=True)
+
 
