@@ -1,1 +1,1 @@
-web: gunicorn CEYLONUNI.wsgi
+web: gunicorn ceylonuni.wsgi
